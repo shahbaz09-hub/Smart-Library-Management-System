@@ -1,0 +1,130 @@
+server:
+  port: 8080
+  # Context path removed to avoid duplicating '/api' from controller mappings.
+  # If you prefer a global '/api' prefix, remove the '/api' prefix from controller @RequestMapping annotations instead.
+  # servlet:
+  #   context-path: /api
+
+spring:
+  application:
+    name: Smart Library Management System
+  
+  # Database Configuration - MySQL
+  datasource:
+    url: jdbc:mysql://localhost:3306/library_management?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    initialization-mode: always
+  
+  # JPA Configuration for MySQL
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update  # Use 'update' to preserve data between restarts
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        # Enable second-level cache if needed
+        # cache:
+        #   use_second_level_cache: true
+        #   region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+  
+  # SQL initialization (for initial data)
+  sql:
+    init:
+      mode: always  # Always initialize the database
+      platform: mysql  # Specify the platform for SQL initialization
+
+# Active profile (uncomment the one you want to use)
+# spring.profiles.active=dev
+# spring.profiles.active=mysql
+  
+  # Mail Configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  
+  # Jackson Configuration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: Asia/Kolkata
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:mySecretKey123456789012345678901234567890}
+  expiration: 86400000 # 24 hours in milliseconds
+
+# Library Configuration
+library:
+  fine:
+    rate-per-day: 5.0 # INR per day
+    grace-period-days: 1
+    max-fine-amount: 500.0
+  
+  book:
+    max-issue-days: 14
+    max-renewals: 2
+    renewal-days: 14
+    max-books-per-user: 5
+  
+  notification:
+    due-reminder-days: 3
+    cleanup-read-after-days: 30
+
+# Logging Configuration
+logging:
+  level:
+    com.library.management: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/library-management.log
+
+# Management Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# API Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+# CORS Configuration
+cors:
+  allowed-origins: 
+    - http://localhost:3000
+    - http://localhost:5173
+    - http://localhost:4200
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true

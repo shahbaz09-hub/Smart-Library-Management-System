@@ -1,0 +1,39 @@
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Editors and IDEs
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+backend/logs/
+
+# Java / Maven (backend)
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Node / Vite (frontend)
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+
+# Test and coverage artifacts
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
